@@ -58,7 +58,7 @@ const Page = () =>{
                     "image/jpg": [".jpg"],
                 }} onDragEnter={() => setIsDragOver(true)} onDragLeave={() => setIsDragOver(false)}>
                     {({getRootProps, getInputProps}) => (
-                        <div className="h-full w-full flex-1 flex flex-col items-center justify-center" {...getRootProps()}>
+                        <div className="h-full w-full flex-1 flex flex-col items-center cursor-pointer justify-center" {...getRootProps()}>
                             <input {...getInputProps()} />
                             {isDragOver ? <MousePointerSquareDashed className="w-6 h-6 text-zinc-500 mb-2" /> : isUploading || isPending ? <Loader2 className="animate-spin w-6 h-6 text-zinc-500 mb-2"/> : <Image className="w-6 h-6 text-zinc-500 mb-2"/>}
                             <div className="flex flex-col justify-center mb-2 text-sm text-zinc-700">
