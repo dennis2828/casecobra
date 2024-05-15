@@ -16,6 +16,9 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./actions";
+import { useRouter } from "next/navigation";
 
 interface DesignConfiguratorProps {
   configId: string;
@@ -29,6 +32,20 @@ const DesignConfigurator = ({
   imageDimensions,
 }: DesignConfiguratorProps) => {
   const {toast} = useToast();
+  const router = useRouter();
+  
+  const {mutate: saveConfig} = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigArgs) => {
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    },
+    onSuccess: () => {
+      router.push(`/configure/preview?id=${configId}`); 
+    },
+    onError: () => {
+      toast({title:"Something went wrong", description:"There was an error on our end. Please try again.", variant:"destructive"});
+    }
+  });
 
   const [options, setOptions] = useState<{ 
     color: (typeof COLORS)[number]
@@ -286,7 +303,13 @@ const DesignConfigurator = ({
                   <p className="font-medium whitespace-nowrap">
                     {formatPrice((BASE_PRICE + options.finish.price + options.material.price)/100)}
                   </p>
-                  <Button size="sm" className="w-full">Continue <ArrowRight className="h-4 w-4 ml-1.5 inline" /></Button>
+                  <Button size="sm" className="w-full" onClick={()=>saveConfig({
+                    configId,
+                    color: options.color.value,
+                    finish: options.finish.value,
+                    material: options.material.value,
+                    model: options.model.value,
+                  })}>Continue <ArrowRight className="h-4 w-4 ml-1.5 inline" /></Button>
               </div>
             </div>
         </div>
