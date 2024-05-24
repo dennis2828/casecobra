@@ -1,9 +1,10 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { OrderStatus } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
-import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { changeOrderStatus } from "./action";
 import { useRouter } from "next/navigation";
 
